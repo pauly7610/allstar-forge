@@ -8,7 +8,11 @@ import {
   Settings,
   FileCode2,
   Menu,
-  User
+  User,
+  Puzzle,
+  GraduationCap,
+  RefreshCw,
+  Code2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -23,6 +27,10 @@ const navigation = [
   { name: "Templates", href: "/templates", icon: FileCode2 },
   { name: "Monitoring", href: "/monitoring", icon: Activity },
   { name: "Catalog", href: "/catalog", icon: Package },
+  { name: "Extensions", href: "/extensions", icon: Puzzle },
+  { name: "Learning", href: "/learning", icon: GraduationCap },
+  { name: "Migration", href: "/migration", icon: RefreshCw },
+  { name: "API Docs", href: "/api-docs", icon: Code2 },
   { name: "Settings", href: "/settings", icon: Settings },
 ];
 
