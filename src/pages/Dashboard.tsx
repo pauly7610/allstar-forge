@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { DashboardCard } from "@/components/DashboardCard";
 import { MetricCard } from "@/components/MetricCard";
 import { StatusBadge } from "@/components/StatusBadge";
+import { CreateProjectModal } from "@/components/CreateProjectModal";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { 
@@ -12,10 +14,14 @@ import {
   Shield,
   TrendingUp,
   Server,
-  Users
+  Users,
+  FileText,
+  Zap
 } from "lucide-react";
 
 export default function Dashboard() {
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+
   return (
     <AppLayout>
       <div className="p-8 space-y-8">
@@ -64,7 +70,7 @@ export default function Dashboard() {
             title="Environment Setup"
             description="Quick provision a new project"
             action={
-              <Button size="sm">
+              <Button size="sm" onClick={() => setCreateModalOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
                 New Project
               </Button>
@@ -227,8 +233,39 @@ export default function Dashboard() {
               </div>
             </div>
           </DashboardCard>
+
+          {/* Quick Actions */}
+          <DashboardCard
+            title="Quick Actions"
+            description="Common platform operations"
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" className="h-auto flex-col items-start p-4" onClick={() => setCreateModalOpen(true)}>
+                <Plus className="h-5 w-5 mb-2 self-start" />
+                <span className="font-medium">Create Project</span>
+                <span className="text-xs text-muted-foreground">Provision new environment</span>
+              </Button>
+              <Button variant="outline" className="h-auto flex-col items-start p-4">
+                <FileText className="h-5 w-5 mb-2 self-start" />
+                <span className="font-medium">View Reports</span>
+                <span className="text-xs text-muted-foreground">Compliance & audit logs</span>
+              </Button>
+              <Button variant="outline" className="h-auto flex-col items-start p-4">
+                <Shield className="h-5 w-5 mb-2 self-start" />
+                <span className="font-medium">Security Scan</span>
+                <span className="text-xs text-muted-foreground">Run vulnerability check</span>
+              </Button>
+              <Button variant="outline" className="h-auto flex-col items-start p-4">
+                <Zap className="h-5 w-5 mb-2 self-start" />
+                <span className="font-medium">Cost Analysis</span>
+                <span className="text-xs text-muted-foreground">Optimize spending</span>
+              </Button>
+            </div>
+          </DashboardCard>
         </div>
       </div>
+
+      <CreateProjectModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
     </AppLayout>
   );
 }

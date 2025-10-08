@@ -1,17 +1,19 @@
+import { useState, useMemo } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { DashboardCard } from "@/components/DashboardCard";
+import { FilterableTabs } from "@/components/FilterableTabs";
+import { SearchableList } from "@/components/SearchableList";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
-  Search, 
-  FileCode2, 
   Download, 
   Star,
   Shield,
   Database,
   Sparkles,
-  TrendingUp
+  TrendingUp,
+  FileCode2
 } from "lucide-react";
 
 const templates = [
@@ -83,9 +85,32 @@ const templates = [
   }
 ];
 
-const categories = ["All", "Machine Learning", "Analytics", "Data Engineering", "API Services", "Governance", "AI/ML"];
+const categoryFilters = [
+  { id: "All", label: "All", count: 6 },
+  { id: "Machine Learning", label: "Machine Learning", count: 1 },
+  { id: "Analytics", label: "Analytics", count: 1 },
+  { id: "Data Engineering", label: "Data Engineering", count: 1 },
+  { id: "API Services", label: "API Services", count: 1 },
+  { id: "Governance", label: "Governance", count: 1 },
+  { id: "AI/ML", label: "AI/ML", count: 1 }
+];
 
 export default function Templates() {
+  const [activeCategory, setActiveCategory] = useState("All");
+  const { toast } = useToast();
+
+  const filteredTemplates = useMemo(() => {
+    if (activeCategory === "All") return templates;
+    return templates.filter(t => t.category === activeCategory);
+  }, [activeCategory]);
+
+  const handleUseTemplate = (templateName: string) => {
+    toast({
+      title: "Template Selected",
+      description: `Setting up project with ${templateName}...`,
+    });
+  };
+
   return (
     <AppLayout>
       <div className="p-8 space-y-6">
@@ -97,33 +122,19 @@ export default function Templates() {
           </p>
         </div>
 
-        {/* Search and Filters */}
-        <div className="flex gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search templates..."
-              className="pl-10"
-            />
-          </div>
-        </div>
-
-        {/* Category Pills */}
-        <div className="flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={category === "All" ? "default" : "outline"}
-              size="sm"
-            >
-              {category}
-            </Button>
-          ))}
-        </div>
+        {/* Category Filters */}
+        <FilterableTabs
+          filters={categoryFilters}
+          activeFilter={activeCategory}
+          onFilterChange={setActiveCategory}
+        />
 
         {/* Templates Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {templates.map((template) => (
+        <SearchableList
+          items={filteredTemplates}
+          searchKeys={['name', 'description', 'category']}
+          placeholder="Search templates..."
+          renderItem={(template) => (
             <DashboardCard
               key={template.id}
               title={template.name}
@@ -159,15 +170,15 @@ export default function Templates() {
                     <Button variant="outline" size="sm">
                       Preview
                     </Button>
-                    <Button size="sm">
+                    <Button size="sm" onClick={() => handleUseTemplate(template.name)}>
                       Use Template
                     </Button>
                   </div>
                 </div>
               </div>
             </DashboardCard>
-          ))}
-        </div>
+          )}
+        />
       </div>
     </AppLayout>
   );

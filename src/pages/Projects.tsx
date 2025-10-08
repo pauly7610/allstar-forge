@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { AppLayout } from "@/components/AppLayout";
 import { DashboardCard } from "@/components/DashboardCard";
 import { QualityScorecard } from "@/components/QualityScorecard";
 import { CostWidget } from "@/components/CostWidget";
+import { CreateProjectModal } from "@/components/CreateProjectModal";
+import { SearchableList } from "@/components/SearchableList";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Plus, 
-  Search, 
   GitBranch, 
   Clock, 
   Users,
@@ -79,6 +81,16 @@ const projects = [
 ];
 
 export default function Projects() {
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const { toast } = useToast();
+
+  const handleClone = (projectName: string) => {
+    toast({
+      title: "Project Cloning",
+      description: `Creating a clone of ${projectName}...`,
+    });
+  };
+
   return (
     <AppLayout>
       <div className="p-8 space-y-6">
@@ -90,34 +102,25 @@ export default function Projects() {
               Manage analytics environments with quality scorecards and cost tracking
             </p>
           </div>
-          <Button>
+          <Button onClick={() => setCreateModalOpen(true)}>
             <Plus className="mr-2 h-4 w-4" />
             New Project
           </Button>
         </div>
 
-        {/* Search and Filters */}
-        <div className="flex gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search projects by name, team, or description..."
-              className="pl-10"
-            />
-          </div>
-          <Button variant="outline">Filter</Button>
-        </div>
-
         {/* Projects List */}
-        <div className="space-y-6">
-          {projects.map((project) => (
+        <SearchableList
+          items={projects}
+          searchKeys={['name', 'description', 'team']}
+          placeholder="Search projects by name, team, or description..."
+          renderItem={(project) => (
             <DashboardCard
               key={project.id}
               title={project.name}
               description={project.description}
               action={
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleClone(project.name)}>
                     <Copy className="h-4 w-4 mr-2" />
                     Clone
                   </Button>
@@ -191,8 +194,10 @@ export default function Projects() {
                 </div>
               </div>
             </DashboardCard>
-          ))}
-        </div>
+          )}
+        />
+
+        <CreateProjectModal open={createModalOpen} onOpenChange={setCreateModalOpen} />
       </div>
     </AppLayout>
   );
