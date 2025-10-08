@@ -46,7 +46,7 @@ ops/               # GitHub Actions, K8s, OpenTelemetry, SIEM
 1. **Clone and Install**
 
    ```bash
-   git clone <YOUR_GIT_URL>
+git clone <YOUR_GIT_URL>
    cd allstar-forge
    npm install
    ```
