@@ -1,73 +1,220 @@
-# Welcome to your Lovable project
+# Allstar Forge Platform
 
-## Project info
+**Enterprise Analytics Platform for Secure, Compliant Data Infrastructure**
 
-**URL**: https://lovable.dev/projects/f6aa37ce-9b11-49b2-9498-97baef25d31c
+A comprehensive monorepo providing intelligent infrastructure automation, compliance management, and observability for enterprise analytics workloads.
 
-## How can I edit this code?
+## 🏗️ Architecture Overview
 
-There are several ways of editing your application.
+Allstar Forge is a modern, cloud-native platform built with:
 
-**Use Lovable**
+- **Frontend**: React + TypeScript + Vite + shadcn/ui
+- **Backend**: FastAPI (Python) with async PostgreSQL
+- **Workflows**: Temporal for orchestration
+- **Infrastructure**: Docker Compose for local development
+- **Observability**: Structured logging, audit trails, monitoring
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f6aa37ce-9b11-49b2-9498-97baef25d31c) and start prompting.
+## 📁 Monorepo Structure
 
-Changes made via Lovable will be committed automatically to this repo.
+```
+apps/
+├── web/           # React frontend (Vite + TypeScript)
+├── api/           # FastAPI backend service
+├── worker/        # Temporal workflow workers
+└── agent/         # Intelligent agent service (human-in-the-loop)
 
-**Use your preferred IDE**
+packages/
+├── policies/      # OPA/Rego policy definitions
+├── scoring/       # Scorecard configurations
+└── plugins/       # Extension SDK
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+dev/               # Docker Compose for local development
+infra/             # Terraform/Helm/ArgoCD/Crossplane
+ops/               # GitHub Actions, K8s, OpenTelemetry, SIEM
 ```
 
-**Edit a file directly in GitHub**
+## 🚀 Quick Start
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Node.js 20+ and npm
+- Python 3.11+
+- Docker and Docker Compose
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Local Development
 
-## What technologies are used for this project?
+1. **Clone and Install**
 
-This project is built with:
+   ```bash
+   git clone <YOUR_GIT_URL>
+   cd allstar-forge
+   npm install
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+2. **Start All Services**
 
-## How can I deploy this project?
+   ```bash
+   # Start the complete stack (Postgres, Redis, Temporal, API, Agent, Worker, Web)
+   npm run dev:up
 
-Simply open [Lovable](https://lovable.dev/projects/f6aa37ce-9b11-49b2-9498-97baef25d31c) and click on Share -> Publish.
+   # Access the applications:
+   # - Frontend: http://localhost:3000
+   # - API: http://localhost:8081
+   # - Agent: http://localhost:8083
+   # - Temporal UI: http://localhost:8233
+   ```
 
-## Can I connect a custom domain to my Lovable project?
+3. **Stop Services**
+   ```bash
+   npm run dev:down
+   ```
 
-Yes, you can!
+### Individual Service Development
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+**Frontend (React)**
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```bash
+npm run dev -w @allstar/web
+```
+
+**API Service**
+
+```bash
+cd apps/api
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8081
+```
+
+**Agent Service**
+
+```bash
+cd apps/agent
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8083
+```
+
+**Temporal Worker**
+
+```bash
+cd apps/worker
+pip install -r requirements.txt
+python -m apps.worker.start
+```
+
+## 🔧 Development Workflow
+
+### Frontend Development
+
+- Uses Vite for fast HMR
+- TypeScript for type safety
+- shadcn/ui components
+- React Query for API state management
+- Tailwind CSS for styling
+
+### Backend Development
+
+- FastAPI with async/await
+- PostgreSQL with asyncpg
+- Structured logging with structlog
+- Comprehensive audit trails
+- OpenAPI documentation
+
+### Infrastructure
+
+- Docker Compose for local development
+- Temporal for workflow orchestration
+- Redis for caching and queues
+- PostgreSQL for data persistence
+
+## 🏢 Platform Features
+
+### Core Capabilities
+
+- **Project Management**: Create, monitor, and manage analytics projects
+- **Infrastructure Automation**: Terraform-based provisioning with Temporal workflows
+- **Compliance & Security**: Built-in policy enforcement and audit logging
+- **Cost Optimization**: Real-time cost tracking and optimization recommendations
+- **Intelligent Agent**: Human-in-the-loop approvals with risk assessment
+- **Service Catalog**: Discover and manage platform services
+- **Monitoring & Observability**: Comprehensive metrics and alerting
+
+### API Endpoints
+
+- **Projects**: `/api/v1/projects` - CRUD operations for projects
+- **Environments**: `/api/v1/environments` - Environment management
+- **Monitoring**: `/api/v1/monitoring` - Metrics and health checks
+- **Audit**: `/api/v1/audit` - Compliance and audit trails
+- **Policies**: `/api/v1/policies` - Policy validation and enforcement
+- **Workflows**: `/api/v1/workflows` - Temporal workflow management
+
+### Frontend Pages
+
+- **Dashboard**: Overview of projects, metrics, and quick actions
+- **Projects**: Project management and creation
+- **Templates**: Infrastructure templates and marketplace
+- **Monitoring**: Real-time metrics and alerting
+- **Catalog**: Service discovery and management
+- **Extensions**: Plugin marketplace and management
+- **API Docs**: Interactive API documentation
+
+## 🛠️ Technology Stack
+
+### Frontend
+
+- **React 18** with TypeScript
+- **Vite** for build tooling
+- **shadcn/ui** for components
+- **Tailwind CSS** for styling
+- **React Query** for state management
+- **React Router** for navigation
+
+### Backend
+
+- **FastAPI** (Python 3.11) with async/await
+- **PostgreSQL** with asyncpg for database
+- **Redis** for caching and queues
+- **Temporal** for workflow orchestration
+- **structlog** for structured logging
+
+### Infrastructure
+
+- **Docker** and **Docker Compose** for containerization
+- **Terraform** for infrastructure as code
+- **OpenTelemetry** for observability
+- **Prometheus** and **Grafana** for monitoring
+
+## 📚 Documentation
+
+- **API Documentation**: Available at `/docs` when running locally
+- **Frontend Components**: Built with shadcn/ui design system
+- **Database Schema**: Comprehensive audit trails and project management
+- **Workflow Definitions**: Temporal-based infrastructure automation
+
+## 🚀 Deployment
+
+### Local Development
+
+```bash
+npm run dev:up  # Start all services
+```
+
+### Production Deployment
+
+The platform is designed for cloud-native deployment with:
+
+- Kubernetes orchestration
+- Helm charts for configuration
+- ArgoCD for GitOps
+- Crossplane for cloud resource management
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests and documentation
+5. Submit a pull request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

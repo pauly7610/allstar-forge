@@ -1,0 +1,19 @@
+tiers:
+  gold:
+    thresholds:
+      security: 90
+      quality: 90
+      performance: 90
+      compliance: 95
+  silver:
+    thresholds:
+      security: 80
+      quality: 80
+      performance: 80
+      compliance: 85
+metrics:
+  dora:
+    deploy_frequency_weight: 0.25
+    lead_time_weight: 0.25
+    mttr_weight: 0.25
+    cfr_weight: 0.25
