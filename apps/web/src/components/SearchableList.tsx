@@ -10,7 +10,7 @@ interface SearchableListProps<T> {
   emptyMessage?: string;
 }
 
-export function SearchableList<T extends Record<string, any>>({
+export function SearchableList<T extends Record<string, unknown>>({
   items,
   searchKeys,
   renderItem,
